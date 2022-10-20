@@ -2,36 +2,51 @@ const menuEmail = document.querySelector(".navbar-email");
 const desktopMenu   = document.querySelector(".desktop-menu");
 const dektopHamIcon = document.querySelector(".menu");
 const movileMenu = document.querySelector(".mobile-menu");
-const carrito  =document.querySelector('.product-detail');
+const carrito  =document.querySelector('#shoppingCartContainer');
 const carritoImg = document.querySelector('.navbar-shopping-cart');
 const carsContainer = document.querySelector('.cards-container');
-
+const productDetailContainer = document.querySelector('#productDetail');
+const productDetailCloseIcon = document.querySelector('.product-detail-close');
 carritoImg.addEventListener('click',toggleShoppingCart);
 dektopHamIcon.addEventListener('click',toggleDesktopMenu);
 menuEmail.addEventListener('click', showMenu);
 function showMenu() {
     const isCarritoClosed = carritoImg.classList.contains('inactive');
-    if (!isCarritoClosed) {
+    const isproductoDetailClosed = productDetailContainer.classList.contains('inactive');
+    if (!isCarritoClosed || !isproductoDetailClosed) {
         carrito.classList.add('inactive');
+        productDetailContainer.classList.add('inactive');
     }
     desktopMenu.classList.toggle('inactive');
 }
 function toggleDesktopMenu() {
     const isCarritoClosed = carrito.classList.contains('inactive');
-    if (!isCarritoClosed){
+    const isproductoDetailClosed = productDetailContainer.classList.contains('inactive');
+    if (!isCarritoClosed||!isproductoDetailClosed){
         carrito.classList.add('inactive');
+        productDetailContainer.classList.add('inactive');
     }
     movileMenu.classList.toggle('inactive');
 }
 function toggleShoppingCart(){
     const isMenuClosed = movileMenu.classList.contains('inactive');
     const isDesktopMenu = desktopMenu.classList.contains('inactive');
-    if(!isMenuClosed&&!isDesktopMenu){
+    const isproductoDetailClosed = productDetailContainer.classList.contains('inactive');
+
+    if(!isMenuClosed||!isDesktopMenu||!isproductoDetailClosed){
         movileMenu.classList.add('inactive');
         desktopMenu.classList.add('inactive');
+        productDetailContainer.classList.add('inactive');
     } 
     carrito.classList.toggle('inactive'); 
 }
+function openProductDetailAside(){
+    productDetailContainer.classList.remove('inactive');
+
+}
+productDetailCloseIcon.addEventListener('click',()=>{
+    productDetailContainer.classList.add('inactive');
+});
 const productList = [];
 productList.push({
     name :'bike',
@@ -59,6 +74,9 @@ function renderProducts(arry){
         //product =  {name, price, image} -> product.image
         const img = document.createElement('img');
         img.setAttribute('src',product.img);
+        img.addEventListener('click',openProductDetailAside);
+
+
         const producInf =  document.createElement('div');
         producInf.classList.add('product-info');
     
@@ -80,12 +98,13 @@ function renderProducts(arry){
     
         producInf.appendChild(productInfDiv);
         producInf.appendChild(productFigure);
-        productCard.appendChild(producInf);
         productCard.appendChild(img);
+        productCard.appendChild(producInf);
+
     
         carsContainer.appendChild(productCard);
         
     }
     
 }
-renderProducts(productList);
+renderProducts(productList); 
